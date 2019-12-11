@@ -1,0 +1,31 @@
+{% extends "modules/custom/omni_layouts/layouts/base/layout.html.twig" %}
+
+{% block regions %}
+{%
+  set classes = [
+    'layout',
+    'layout--threecol-'~settings.layout.column_widths,
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  <div {{ region_attributes.top.addClass('layout__region', 'layout__region--top') }}>
+    {{ content.top }}
+  </div>
+
+  <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first') }}>
+    {{ content.first }}
+  </div>
+
+  <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second') }}>
+    {{ content.second }}
+  </div>
+
+  <div {{ region_attributes.third.addClass('layout__region', 'layout__region--third') }}>
+    {{ content.third }}
+  </div>
+
+  <div {{ region_attributes.bottom.addClass('layout__region', 'layout__region--bottom') }}>
+    {{ content.bottom }}
+  </div>
+</div>
+{% endblock %}

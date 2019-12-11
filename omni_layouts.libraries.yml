@@ -1,0 +1,19 @@
+onecol:
+  css:
+    theme:
+      layouts/onecol/onecol.css: {}
+      css/custom.css: {}
+twocol:
+  css:
+    theme:
+      layouts/twocol/twocol.css: {}
+      css/custom.css: {}
+threecol:
+  css:
+    theme:
+      layouts/threecol/threecol.css: {}
+      css/custom.css: {}
+swatch:
+  css:
+    theme:
+      css/swatch.css: {}

@@ -1,0 +1,9 @@
+omni_layouts.admin_settings:
+  path: '/admin/config/omni_layouts'
+  defaults:
+    _form: '\Drupal\omni_layouts\Form\OmniLayoutsSettingsForm'
+    _title: 'Omni Layouts configuration screen'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

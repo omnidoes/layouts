@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{%
+  set classes = [
+    'layout'
+  ]
+%}
+{%
+  set wrapper_classes = content.wrapper['#attributes'].class|join(' ')
+%}
+{% block prefix %}
+{% endblock %}
+{% if content %}
+  <section {{ region_attributes.section.addClass(settings.extra.css_class) }}>
+    {% if(settings.layout.row_width) %}
+    <div {{ region_attributes.wrapper }}>
+    {% endif %}
+      {% if settings.title %}
+        <{{ settings.title_element}} class="{{ settings.title_classes}}">{{ settings.title }}</{{ settings.title_element }}>
+      {% endif %}
+      {% block regions %}
+      <div {{ attributes.addClass(classes) }}>
+        <div {{ region_attributes.content.addClass('layout__region', 'layout__region--content') }}>
+          {{ content.content }}
+        </div>
+      </div>
+      {% endblock %}
+    {% if(settings.layout.row_width) %}
+    </div>
+    {% endif %}
+  </section>
+{% endif %}

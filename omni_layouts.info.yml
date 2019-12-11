@@ -1,0 +1,11 @@
+name: "Omni Layouts"
+description: Drupal 8 layouts with configurable styling.
+type: module
+core: 8.x
+package: Omni
+configure: omni_layouts.admin_settings
+dependencies:
+  - drupal:block
+  - entity_browser:entity_browser
+  - entity_browser_block:entity_browser_block
+  
