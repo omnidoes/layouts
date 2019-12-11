@@ -68,7 +68,9 @@ class OmniLayoutsSettingsForm extends ConfigFormBase {
       $config_colors : 
       $form_state->getValue('bgcolors');
     // Rekey array 
-    $bgcolors = array_values($bgcolors);
+    if($bgcolors !== null) {
+      $bgcolors = array_values($bgcolors);
+    }
 
     $form['#tree'] = TRUE;
 
@@ -98,52 +100,54 @@ class OmniLayoutsSettingsForm extends ConfigFormBase {
       ]
     ];
 
-      for ($i = 0; $i < $num_colors; $i++) {
+    for ($i = 0; $i < $num_colors; $i++) {
 
-        if (!isset($bgcolors[$i]['weight'])) {
-          $bgcolors[$i]['weight'] = 0;
-        }    
+      if (!isset($bgcolors[$i]['weight'])) {
+        $bgcolors[$i]['weight'] = 0;
+      }    
 
-        $form['bgcolors'][$i]['#attributes']['class'][] = 'draggable';
-        $form['bgcolors'][$i]['#weight'] = $bgcolors[$i]['weight'];
+      $form['bgcolors'][$i]['#attributes']['class'][] = 'draggable';
+      $form['bgcolors'][$i]['#weight'] = isset($bgcolors[$i]['weight']) ? $bgcolors[$i]['weight'] : '';
 
-        $form['bgcolors'][$i]['name'] = [
-          '#type' => 'textfield',
-          '#title' => $this->t('Color Name'),
-          '#title_display' => 'invisible',
-          '#default_value' => $bgcolors[$i]['name'],
-        ];
+      $form['bgcolors'][$i]['name'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Color Name'),
+        '#title_display' => 'invisible',
+        '#default_value' => isset($bgcolors[$i]['name']) ? $bgcolors[$i]['name']: '',
+      ];
 
-        $form['bgcolors'][$i]['machine_name'] = [
-          '#type' => 'textfield',
-          '#title' => $this->t('Machine Name'),
-          '#title_display' => 'invisible',
-          '#disabled' => TRUE,
-          '#value' => $bgcolors[$i]['machine_name']
-        ];
+      $form['bgcolors'][$i]['machine_name'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Machine Name'),
+        '#title_display' => 'invisible',
+        '#disabled' => TRUE,
+        '#value' => isset($bgcolors[$i]['machine_name']) ? $bgcolors[$i]['machine_name']: '',
+      ];
 
-        $form['bgcolors'][$i]['code'] = [
-          '#type' => 'textfield',
-          '#title' => $this->t('Color Code'),
-          '#title_display' => 'invisible',
-          '#default_value' => $bgcolors[$i]['code'],
-        ];
+      $form['bgcolors'][$i]['code'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Color Code'),
+        '#title_display' => 'invisible',
+        '#default_value' => isset($bgcolors[$i]['code']) ? $bgcolors[$i]['code']: '',
+      ];
 
-        $form['bgcolors'][$i]['weight'] = [
-          '#type' => 'weight',
-          '#title' => $this->t('Weight for @title', ['@title' => $bgcolors[$i]['name']]),
-          '#title_display' => 'invisible',
-          '#default_value' => $bgcolors[$i]['weight'],
-          '#attributes' => ['class' => [$group_class]],
-        ];
+      $form['bgcolors'][$i]['weight'] = [
+        '#type' => 'weight',
+        '#title' => $this->t('Weight for @title', 
+          ['@title' => isset($bgcolors[$i]['name']) ? $bgcolors[$i]['name'] : '']
+        ),
+        '#title_display' => 'invisible',
+        '#default_value' => isset($bgcolors[$i]['weight']) ? $bgcolors[$i]['weight'] : '',
+        '#attributes' => ['class' => [$group_class]],
+      ];
 
-        // $form['bgcolors'][$i]['actions']['remove_row'] = [
-        //   '#type' => 'submit',
-        //   '#name' => "remove_row_$i",
-        //   '#value' => $this->t('Remove'),
-        //   '#submit' => ['::removeRow']
-        // ];
-      }
+      // $form['bgcolors'][$i]['actions']['remove_row'] = [
+      //   '#type' => 'submit',
+      //   '#name' => "remove_row_$i",
+      //   '#value' => $this->t('Remove'),
+      //   '#submit' => ['::removeRow']
+      // ];
+    }
 
 
     // Actions
