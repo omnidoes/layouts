@@ -1,7 +1,7 @@
 {
   "name": "omnidoes/layouts",
   "description": "Drupal 8 layouts with configurable UI elements.",
-  "type": "drupal-custom-module",
+  "type": "drupal-module",
   "homepage": "https://github.com/omnidoes/layouts",
   "keywords": ["Drupal"]
 }
