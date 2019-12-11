@@ -3,5 +3,8 @@
   "description": "Drupal 8 layouts with configurable UI elements.",
   "type": "drupal-module",
   "homepage": "https://github.com/omnidoes/omni_layouts",
-  "keywords": ["Drupal"]
+  "keywords": ["Drupal"],
+  "require": {
+    "drupal/entity_browser_block": "^1.0"
+  }
 }
