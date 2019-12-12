@@ -265,7 +265,7 @@ class OmniLayoutsSettingsForm extends ConfigFormBase {
     
     // Create a machine_name value for each color record.
     foreach ($bgcolors as $key => $value) {
-      if ($bgcolors[$key]['machine_name'] === NULL) {
+      if ($bgcolors[$key]['machine_name'] === NULL || empty($bgcolors[$key]['machine_name']) ) {
         $bgcolors[$key]['machine_name'] = $this->transformToMachineName($value['name']);
       }
     }
