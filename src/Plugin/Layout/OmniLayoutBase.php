@@ -94,23 +94,29 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
     ];
 
       $bgcolors = $config->get('bgcolors');
-      $css = $this->getBackgroundColorCss($bgcolors);
 
-      $form['background']['styles'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'style',
-        '#attributes' => [
-          'media' => $css['media'],
-        ],
-        '#value' => Markup::create($css['style']),
-      ];
+      if (!empty($bgcolors)) {
+        $css = $this->getBackgroundColorCss($bgcolors);
+
+        $form['background']['styles'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'style',
+          '#attributes' => [
+            'media' => $css['media'],
+          ],
+          '#value' => Markup::create($css['style']),
+        ];
+      }
 
       $backgroundColorOptions = []; 
       
-      foreach($bgcolors as $key => $value) {
-        $swatch = "<span class='swatch swatch--" . $value['machine_name'] . "'></span>";
-        $backgroundColorOptions[$value['machine_name']] = $this->t($value['name']) . ' ' . $swatch;
-      };
+      if (!empty($bgcolors)) {
+        foreach($bgcolors as $key => $value) {
+          $swatch = "<span class='swatch swatch--" . $value['machine_name'] . "'></span>";
+          $backgroundColorOptions[$value['machine_name']] = $this->t($value['name']) . ' ' . $swatch;
+        };
+      }
+
       // Add the default option
       $backgroundColorOptions = array('none' => $this->t('None')) + $backgroundColorOptions;
     
