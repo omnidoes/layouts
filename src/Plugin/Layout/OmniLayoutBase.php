@@ -3,6 +3,7 @@
 namespace Drupal\omni_layouts\Plugin\Layout;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Layout\LayoutDefault;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Render\Markup;
@@ -47,6 +48,14 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
 
     $config = \Drupal::config(static::SETTINGS);
+
+    // This method receives a sub form state instead of the full form state.
+    // There is an ongoing discussion around this which could result in the
+    // passed form state going back to a full form state. In order to prevent
+    // future breakage because of a core update we'll just check which type of
+    // FormStateInterface we've been passed and act accordingly.
+    // @See https://www.drupal.org/node/2798261
+    $complete_form_state = $form_state instanceof SubformStateInterface ? $form_state->getCompleteFormState() : $form_state;
 
     /*
      * Alignment Section
@@ -159,7 +168,7 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
         '#options' => $this->getWidthOptions(),
         '#description' => $this->t('Choose the column widths for this layout.'),
       ];
-
+      
       $form['layout']['row_width'] = [
         '#type' => 'select',
         '#tree' => TRUE,
@@ -175,7 +184,20 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
           '25' => $this->t('25%')
         ]
       ];
+       
+      $defaultRowConstrain = $complete_form_state->getValue(['layout', 'row_constrain'], $this->configuration['layout']['row_constrain']);
+      if ($defaultRowConstrain === null) { 
+        $defaultRowConstrain = TRUE;
+      }
 
+      $form['layout']['row_constrain'] = [
+        '#type' => 'checkbox',
+        '#tree' => TRUE,
+        '#title' => $this->t('Constrain row max-width'),
+        '#default_value' => $defaultRowConstrain,
+        '#description' => $this->t('Enable to constrain the width of this row to the maximum layout width.'),
+      ];
+      
 
     /*
      * Extra Section
@@ -213,6 +235,7 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
     $this->configuration['layout']['vertical_padding_level'] = $form_state->getValue(['layout', 'vertical_padding_level']);
     $this->configuration['layout']['column_widths'] = $form_state->getValue(['layout', 'column_widths']);
     $this->configuration['layout']['row_width'] = $form_state->getValue(['layout', 'row_width']);
+    $this->configuration['layout']['row_constrain'] = $form_state->getValue(['layout', 'row_constrain']);
     $this->configuration['extra']['css_class'] = $form_state->getValue(['extra', 'css_class']);
   }
 
@@ -250,9 +273,12 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
     ];
 
     $build['wrapper']['#attributes']['class'] = [
-      'layout__container',
-      'layout__container--maxdesk',
+      'layout__container'
     ];
+
+    if($this->configuration['layout']['row_constrain'] === 1) {
+      $build['wrapper']['#attributes']['class'][] = 'layout__container--maxdesk';
+    }
 
     if($this->configuration['alignment']['horizontal'] !== NULL) {
       $build['wrapper']['#attributes']['class'][] = 'layout--align';
