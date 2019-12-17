@@ -197,7 +197,6 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
         '#default_value' => $defaultRowConstrain,
         '#description' => $this->t('Enable to constrain the width of this row to the maximum layout width.'),
       ];
-      
 
     /*
      * Extra Section
@@ -276,8 +275,10 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
       'layout__container'
     ];
 
-    if($this->configuration['layout']['row_constrain'] === 1) {
-      $build['wrapper']['#attributes']['class'][] = 'layout__container--maxdesk';
+    if(!empty($this->configuration['layout']['row_constrain'])) {
+      if($this->configuration['layout']['row_constrain'] === 1) {
+        $build['wrapper']['#attributes']['class'][] = 'layout__container--maxdesk';
+      }
     }
 
     if($this->configuration['alignment']['horizontal'] !== NULL) {
