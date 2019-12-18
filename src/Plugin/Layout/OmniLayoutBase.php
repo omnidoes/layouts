@@ -34,7 +34,8 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
       'layout' => [
         'column_widths' => array_shift($width_classes),
         'row_width' => '100',
-        'vertical_padding_level' => 'regular'
+        'vertical_padding_level' => 'regular',
+        'row_remove_padding' => null
       ],
       'extra' => [
         'css_class' => null
@@ -198,6 +199,14 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
         '#description' => $this->t('Enable to constrain the width of this row to the maximum layout width.'),
       ];
 
+      $form['layout']['row_remove_padding'] = [
+        '#type' => 'checkbox',
+        '#tree' => TRUE,
+        '#title' => $this->t('Remove the outside padding from this row.'),
+        '#default_value' => $this->configuration['layout']['row_remove_padding'],
+        '#description' => $this->t('Good for edge-to-edge one-column layouts.'),
+      ];
+
     /*
      * Extra Section
      */
@@ -235,6 +244,7 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
     $this->configuration['layout']['column_widths'] = $form_state->getValue(['layout', 'column_widths']);
     $this->configuration['layout']['row_width'] = $form_state->getValue(['layout', 'row_width']);
     $this->configuration['layout']['row_constrain'] = $form_state->getValue(['layout', 'row_constrain']);
+    $this->configuration['layout']['row_remove_padding'] = $form_state->getValue(['layout', 'row_remove_padding']);
     $this->configuration['extra']['css_class'] = $form_state->getValue(['extra', 'css_class']);
   }
 
@@ -279,6 +289,10 @@ abstract class OmniLayoutBase extends LayoutDefault implements PluginFormInterfa
       if($this->configuration['layout']['row_constrain'] === 1) {
         $build['wrapper']['#attributes']['class'][] = 'layout__container--maxdesk';
       }
+    }
+
+    if($this->configuration['layout']['row_remove_padding'] == TRUE) {
+      $build['wrapper']['#attributes']['class'][] = 'layout__container--paddless';
     }
 
     if($this->configuration['alignment']['horizontal'] !== NULL) {
